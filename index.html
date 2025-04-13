@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Übungs-App</title>
+    <style>
+        body {
+            background-color: black;
+            color: #f2c94c;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 40px;
+        }
+        #logo {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 100px;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-top: 80px;
+        }
+        select, button {
+            padding: 10px 20px;
+            font-size: 1em;
+            margin: 10px;
+            border-radius: 5px;
+            border: none;
+        }
+        button {
+            background-color: #f2c94c;
+            color: black;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <img id="logo" src="rockreloaded-logo-final.png" alt="Logo">
+    <h1>🎸 Übungs-App</h1>
+    <label for="category">Auswahl:</label>
+    <select id="category">
+        <option value="all">Alle Songs</option>
+        <option value="sets">Nur aus Sets</option>
+        <option value="male">Nur männliche Songs</option>
+        <option value="female">Nur weibliche Songs</option>
+    </select>
+    <br>
+    <button onclick="drawSong()">🎲 Zufall wählen</button>
+    <h2 id="selectedSong">Wähle eine Option und drücke den Button 🎵</h2>
+
+    <script>
+        const songs = {
+            "0-1": "Song 0-1", "0-2": "Song 0-2", "0-3": "Song 0-3", "0-4": "Song 0-4", "0-5": "Song 0-5", "0-6": "Song 0-6", "0-12": "Song 0-12",
+            "1-1": "Song 1-1", "1-2": "Song 1-2", "1-3": "Song 1-3", "1-7": "Song 1-7", "1-8": "Song 1-8", "1-12": "Song 1-12",
+            "2-1": "Song 2-1", "2-5": "Song 2-5", "2-6": "Song 2-6", "2-7": "Song 2-7", "2-8": "Song 2-8", "2-9": "Song 2-9",
+            "2-11": "Song 2-11", "2-13": "Song 2-13", "2-14": "Song 2-14", "2-15": "Song 2-15", "2-16": "Song 2-16", "2-17": "Song 2-17",
+            "3-1": "Song 3-1", "3-4": "Song 3-4", "3-8": "Song 3-8", "3-11": "Song 3-11", "3-12": "Song 3-12", "Z-2": "Song Z-2",
+            "Z-1": "Song Z-1", "3-5": "Song 3-5", "3-6": "Song 3-6", "3-2": "Song 3-2", "3-3": "Song 3-3", "2-4": "Song 2-4"
+        };
+
+        const maleKeys = [
+            "0-4", "0-5", "0-6", "0-12", "1-1", "1-2", "1-3", "1-7", "1-8", "1-12",
+            "2-1", "2-5", "2-6", "2-7", "2-8", "2-9", "2-11", "2-13", "2-14", "2-15", "2-16", "2-17",
+            "3-1", "3-4", "3-8", "3-11", "3-12", "Z-2"
+        ];
+
+        let lastDraws = [];
+
+        function drawSong() {
+            const cat = document.getElementById("category").value;
+            let filtered = Object.keys(songs);
+
+            if (cat === "male") {
+                filtered = maleKeys;
+            } else if (cat === "female") {
+                filtered = filtered.filter(k => !maleKeys.includes(k));
+            }
+
+            let possible = filtered.filter(k => !lastDraws.includes(k));
+            if (possible.length === 0) {
+                lastDraws = [];
+                possible = [...filtered];
+            }
+
+            const draw = possible[Math.floor(Math.random() * possible.length)];
+            lastDraws.push(draw);
+            if (lastDraws.length > 15) lastDraws.shift();
+
+            document.getElementById("selectedSong").innerText = songs[draw];
+        }
+    </script>
+</body>
+</html>
