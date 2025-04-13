@@ -1,95 +1,147 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Übungs-App</title>
+    <title>RockReloaded Set</title>
     <style>
-        body {
+        body {{
             background-color: black;
-            color: #f2c94c;
+            color: #f5c542;
             font-family: Arial, sans-serif;
             text-align: center;
-            padding: 40px;
-        }
-        #logo {
+            padding: 20px;
+        }}
+        img {{
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 10px;
+            right: 10px;
             width: 100px;
-        }
-        h1 {
-            font-size: 2.5em;
-            margin-top: 80px;
-        }
-        select, button {
-            padding: 10px 20px;
-            font-size: 1em;
+        }}
+        select, button {{
+            font-size: 18px;
             margin: 10px;
+            padding: 10px;
             border-radius: 5px;
             border: none;
-        }
-        button {
-            background-color: #f2c94c;
-            color: black;
-            cursor: pointer;
-        }
+        }}
+        #song {{
+            font-size: 32px;
+            margin-top: 40px;
+        }}
     </style>
 </head>
 <body>
-    <img id="logo" src="rockreloaded-logo-final.png" alt="Logo">
-    <h1>🎸 Übungs-App</h1>
-    <label for="category">Auswahl:</label>
-    <select id="category">
-        <option value="all">Alle Songs</option>
-        <option value="sets">Nur aus Sets</option>
-        <option value="male">Nur männliche Songs</option>
-        <option value="female">Nur weibliche Songs</option>
-    </select>
-    <br>
-    <button onclick="drawSong()">🎲 Zufall wählen</button>
-    <h2 id="selectedSong">Wähle eine Option und drücke den Button 🎵</h2>
+    <img src="rockreloaded-logo-final.png" alt="Logo">
+    <h1>RockReloaded Übungsapp</h1>
+    <div>
+        <label for="filter">Songauswahl:</label>
+        <select id="filter">
+            <option value="all">Alle Songs</option>
+            <option value="male">Nur männliche Songs</option>
+            <option value="female">Nur weibliche Songs</option>
+            <option value="set0">Set 0</option>
+            <option value="set1">Set 1</option>
+            <option value="set2">Set 2</option>
+            <option value="set3">Set 3</option>
+            <option value="setz">Zugabe</option>
+        </select>
+        <br>
+        <button onclick="pickRandomSong()">🎲 Song wählen</button>
+        <div id="song"></div>
+    </div>
 
     <script>
-        const songs = {
-            "0-1": "Song 0-1", "0-2": "Song 0-2", "0-3": "Song 0-3", "0-4": "Song 0-4", "0-5": "Song 0-5", "0-6": "Song 0-6", "0-12": "Song 0-12",
-            "1-1": "Song 1-1", "1-2": "Song 1-2", "1-3": "Song 1-3", "1-7": "Song 1-7", "1-8": "Song 1-8", "1-12": "Song 1-12",
-            "2-1": "Song 2-1", "2-5": "Song 2-5", "2-6": "Song 2-6", "2-7": "Song 2-7", "2-8": "Song 2-8", "2-9": "Song 2-9",
-            "2-11": "Song 2-11", "2-13": "Song 2-13", "2-14": "Song 2-14", "2-15": "Song 2-15", "2-16": "Song 2-16", "2-17": "Song 2-17",
-            "3-1": "Song 3-1", "3-4": "Song 3-4", "3-8": "Song 3-8", "3-11": "Song 3-11", "3-12": "Song 3-12", "Z-2": "Song Z-2",
-            "Z-1": "Song Z-1", "3-5": "Song 3-5", "3-6": "Song 3-6", "3-2": "Song 3-2", "3-3": "Song 3-3", "2-4": "Song 2-4"
-        };
+        const allSongs = {{
+            "0-1": "Zombie – The Cranberries",
+            "0-2": "Like the way I do – Melissa Etheridge",
+            "0-3": "All the small things – Blink 182",
+            "0-4": "Narcotic – Liquido",
+            "0-5": "Summer of 69 – Bryan Adams",
+            "0-6": "Boulevard of broken dreams – Green Day",
+            "0-7": "Ironic – Alanis Morissette",
+            "0-8": "You oughta know – Alanis Morissette",
+            "0-9": "Teenage Dirtbag – Wheatus",
+            "0-10": "What’s up – 4 Non Blondes",
+            "0-11": "Respect – Aretha Franklin",
+            "0-12": "Rolling in the deep – Adele",
+            "0-13": "Jolene – Dolly Parton",
+            "0-14": "Hit the road Jack – Ray Charles",
+            "1-1": "Sex on fire – Kings of Leon",
+            "1-2": "Take me out – Franz Ferdinand",
+            "1-3": "Seven Nation Army – The White Stripes",
+            "1-4": "Song 2 – Blur",
+            "1-5": "Rehab – Amy Winehouse",
+            "1-6": "Bad guy – Billie Eilish",
+            "1-7": "Valerie – Amy Winehouse",
+            "1-8": "Stupid Girls – Pink",
+            "1-9": "I love Rock’n’Roll – Joan Jett",
+            "1-10": "Piece of my heart – Janis Joplin",
+            "1-11": "So what – Pink",
+            "1-12": "Shallow – Lady Gaga & Bradley Cooper",
+            "2-1": "Lonely Boy – The Black Keys",
+            "2-2": "Black Velvet – Alannah Myles",
+            "2-3": "House of the Rising Sun – The Animals",
+            "2-4": "Sweet child o’ mine – Guns n’ Roses",
+            "2-5": "Runaway Train – Soul Asylum",
+            "2-6": "I was made for loving you – Kiss",
+            "2-7": "Highway to Hell – AC/DC",
+            "2-8": "When I come around – Green Day",
+            "2-9": "Mr. Brightside – The Killers",
+            "2-10": "Ain’t no sunshine – Bill Withers",
+            "2-11": "Somebody to love – Jefferson Airplane",
+            "2-12": "Bohemian like you – Dandy Warhols",
+            "2-13": "Friday I’m in love – The Cure",
+            "2-14": "Chasing Cars – Snow Patrol",
+            "2-15": "Wonderwall – Oasis",
+            "2-16": "Denkmal – Wir sind Helden",
+            "2-17": "Sunday Bloody Sunday – U2",
+            "3-1": "Westerland – Die Ärzte",
+            "3-2": "Schrei nach Liebe – Die Ärzte",
+            "3-3": "Tage wie diese – Toten Hosen",
+            "3-4": "You give love a bad name – Bon Jovi",
+            "3-5": "Mr. Jones – Counting Crows",
+            "3-6": "Killing in the name – Rage Against the Machine",
+            "3-7": "Californication – Red Hot Chili Peppers",
+            "3-8": "Mein Herz brennt – Rammstein",
+            "3-9": "Lithium – Nirvana",
+            "3-10": "Bring me to life – Evanescence",
+            "3-11": "Engel – Rammstein",
+            "3-12": "Nothing else matters – Metallica",
+            "Z-1": "Helden – David Bowie",
+            "Z-2": "Don’t stop believing – Journey"
+        }};
 
-        const maleKeys = [
-            "0-4", "0-5", "0-6", "0-12", "1-1", "1-2", "1-3", "1-7", "1-8", "1-12",
-            "2-1", "2-5", "2-6", "2-7", "2-8", "2-9", "2-11", "2-13", "2-14", "2-15", "2-16", "2-17",
-            "3-1", "3-4", "3-8", "3-11", "3-12", "Z-2"
-        ];
+        const maleKeys = ["0-4", "0-5", "0-6", "0-12", "1-1", "1-2", "1-3", "1-7", "1-8", "1-12", "2-1", "2-5", "2-6", "2-7", "2-8", "2-9", "2-11", "2-13", "2-14", "2-15", "2-16", "2-17", "3-1", "3-4", "3-8", "3-11", "3-12", "Z-2"];
+        let recentSongs = [];
 
-        let lastDraws = [];
+        function pickRandomSong() {{
+            const filter = document.getElementById('filter').value;
+            let keys = Object.keys(allSongs);
 
-        function drawSong() {
-            const cat = document.getElementById("category").value;
-            let filtered = Object.keys(songs);
+            if (filter.startsWith("set")) {{
+                const set = filter.replace("set", "").toUpperCase();
+                keys = keys.filter(k => k.startsWith(set + "-"));
+            }} else if (filter === "male") {{
+                keys = maleKeys;
+            }} else if (filter === "female") {{
+                keys = keys.filter(k => !maleKeys.includes(k));
+            }}
 
-            if (cat === "male") {
-                filtered = maleKeys;
-            } else if (cat === "female") {
-                filtered = filtered.filter(k => !maleKeys.includes(k));
-            }
+            const available = keys.filter(k => !recentSongs.includes(k));
+            if (available.length === 0) {{
+                recentSongs = [];
+                alert("Alle Songs aus dieser Auswahl wurden kürzlich gespielt. Die Liste wird zurückgesetzt.");
+                return;
+            }}
 
-            let possible = filtered.filter(k => !lastDraws.includes(k));
-            if (possible.length === 0) {
-                lastDraws = [];
-                possible = [...filtered];
-            }
+            const choice = available[Math.floor(Math.random() * available.length)];
+            document.getElementById("song").innerText = allSongs[choice];
 
-            const draw = possible[Math.floor(Math.random() * possible.length)];
-            lastDraws.push(draw);
-            if (lastDraws.length > 15) lastDraws.shift();
-
-            document.getElementById("selectedSong").innerText = songs[draw];
-        }
+            recentSongs.push(choice);
+            if (recentSongs.length > 15) {{
+                recentSongs.shift();
+            }}
+        }}
     </script>
 </body>
 </html>
