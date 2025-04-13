@@ -8,30 +8,29 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="logo-wrapper">
-    <img src="rockreloaded-logo-final.png" class="logo" alt="Logo" />
+  <div class="header">
+    <img src="rockreloaded-logo-final.png" alt="Logo" class="logo" />
   </div>
-  <h1>🎸 RockReloaded – Übungs-App</h1>
-
-  <label for="filter">Songauswahl:</label>
-  <select id="filter" onchange="updateSetDropdown()">
-    <option value="all">Alle Songs</option>
-    <option value="male">Nur männlich gesungene Songs</option>
-    <option value="female">Nur weiblich gesungene Songs</option>
-    <option value="set">Nur aus Sets</option>
-  </select>
-
-  <select id="setSelect" style="display:none;">
-    <option value="0">Set 0</option>
-    <option value="1">Set 1</option>
-    <option value="2">Set 2</option>
-    <option value="3">Set 3</option>
-    <option value="Z">Zugabe</option>
-  </select>
-
-  <button onclick="drawSong()">🎲 Song wählen</button>
-  <div id="songDisplay" class="song-display">Wähle einen Songtyp und klicke auf den Button 🎶</div>
-
+  <h1>🎸 RockReloaded Set</h1>
+  <div class="controls">
+    <label for="filter">Songauswahl:</label>
+    <select id="filter" onchange="handleFilterChange()">
+      <option value="alle">Alle Songs</option>
+      <option value="sets">Nur aus Sets</option>
+      <option value="maennlich">Nur männliche Songs</option>
+      <option value="weiblich">Nur weibliche Songs</option>
+    </select>
+    <select id="setSelect" style="display:none;">
+      <option value="0">Set 0</option>
+      <option value="1">Set 1</option>
+      <option value="2">Set 2</option>
+      <option value="3">Set 3</option>
+      <option value="Z">Zugabe</option>
+    </select>
+    <br />
+    <button onclick="pickRandomSong()">🎲 Song wählen</button>
+    <div id="output" class="output">Wähle eine Option und starte die Auswahl 🎶</div>
+  </div>
   <script src="script.js"></script>
 </body>
 </html>
