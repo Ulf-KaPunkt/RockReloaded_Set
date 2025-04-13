@@ -3,134 +3,35 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>RockReloaded Übungs-App</title>
-  <style>
-    body {{
-      background-color: black;
-      color: gold;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 2em;
-    }}
-    #logo {{
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      width: 100px;
-    }}
-    h1 {{
-      margin-bottom: 1em;
-    }}
-    select, button {{
-      font-size: 1em;
-      margin: 0.5em;
-      padding: 0.4em 1em;
-    }}
-    #songDisplay {{
-      margin-top: 2em;
-      font-size: 1.5em;
-      font-weight: bold;
-    }}
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RockReloaded_Set</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <img id="logo" src="rockreloaded-logo-final.png" alt="Logo" />
+  <div class="logo-wrapper">
+    <img src="rockreloaded-logo-final.png" class="logo" alt="Logo" />
+  </div>
   <h1>🎸 RockReloaded – Übungs-App</h1>
 
-  <div>
-    <label for="filter">Song-Auswahl:</label>
-    <select id="filter" onchange="toggleSetSelect()">
-      <option value="all">Alle Songs</option>
-      <option value="sets">Nach Set</option>
-      <option value="male">Nur männlich gesungene</option>
-      <option value="female">Nur weiblich gesungene</option>
-    </select>
+  <label for="filter">Songauswahl:</label>
+  <select id="filter" onchange="updateSetDropdown()">
+    <option value="all">Alle Songs</option>
+    <option value="male">Nur männlich gesungene Songs</option>
+    <option value="female">Nur weiblich gesungene Songs</option>
+    <option value="set">Nur aus Sets</option>
+  </select>
 
-    <select id="setSelect" style="display:none;">
-      <option value="0">Set 0</option>
-      <option value="1">Set 1</option>
-      <option value="2">Set 2</option>
-      <option value="3">Set 3</option>
-      <option value="Z">Zugabe</option>
-    </select>
-  </div>
+  <select id="setSelect" style="display:none;">
+    <option value="0">Set 0</option>
+    <option value="1">Set 1</option>
+    <option value="2">Set 2</option>
+    <option value="3">Set 3</option>
+    <option value="Z">Zugabe</option>
+  </select>
 
-  <button onclick="drawSong()">🎲 Zufall wählen</button>
-  <div id="songDisplay">Wähle eine Option und drücke auf den Button 🎶</div>
+  <button onclick="drawSong()">🎲 Song wählen</button>
+  <div id="songDisplay" class="song-display">Wähle einen Songtyp und klicke auf den Button 🎶</div>
 
-  <script>
-    const songData = {{
-      "0-1": "9 to 5 – Dolly Parton",
-      "0-2": "A night like this – Caro Emerald",
-      "0-3": "All about that bass – Meghan Trainor",
-      "0-4": "Alright now – Free",
-      "0-5": "Are you gonna be my girl – Jet",
-      "0-6": "Bad Moon Rising – CCR",
-      "0-12": "Down under – Men at work",
-      "1-1": "Get lucky – Daft Punk",
-      "1-2": "Hedonism – Skunk Anansie",
-      "1-3": "I love Rock'n'Roll – Joan Jett",
-      "1-7": "Just like a pill – Pink",
-      "1-8": "Kiss – Prince",
-      "1-12": "Love runs out – One Republic",
-      "2-1": "Mercy – Duffy",
-      "2-5": "One Way or Another – Blondie",
-      "2-6": "Respect – Aretha Franklin",
-      "2-7": "Rolling in the deep – Adele",
-      "2-8": "Runaway Baby – Bruno Mars",
-      "2-9": "Sex on Fire – Kings of Leon",
-      "2-11": "Sing – Ed Sheeran",
-      "2-13": "Something got me started – Simply Red",
-      "2-14": "Son of a preacher man – Dusty Springfield",
-      "2-15": "Stars – Simply Red",
-      "2-16": "This is the life – Amy MacDonald",
-      "2-17": "Time of my life – Medley",
-      "3-1": "TNT – AC/DC",
-      "3-4": "Valerie – Amy Winehouse",
-      "3-8": "You shook me all night long – AC/DC",
-      "3-11": "Smooth Criminal – MJ",
-      "3-12": "Thunderstruck – AC/DC",
-      "Z-2": "Highway to Hell – AC/DC"
-    }};
-
-    const maleSongs = [
-      "0-4","0-5","0-6","0-12","1-1","1-2","1-3","1-7","1-8","1-12",
-      "2-1","2-5","2-6","2-7","2-8","2-9","2-11","2-13","2-14","2-15","2-16","2-17",
-      "3-1","3-4","3-8","3-11","3-12","Z-2"
-    ];
-
-    let history = [];
-
-    function toggleSetSelect() {
-      document.getElementById("setSelect").style.display =
-        document.getElementById("filter").value === "sets" ? "inline" : "none";
-    }
-
-    function drawSong() {
-      const filter = document.getElementById("filter").value;
-      const set = document.getElementById("setSelect").value;
-      let filteredKeys = Object.keys(songData);
-
-      if (filter === "sets") {
-        filteredKeys = filteredKeys.filter(k => k.startsWith(set + "-"));
-      } else if (filter === "male") {
-        filteredKeys = filteredKeys.filter(k => maleSongs.includes(k));
-      } else if (filter === "female") {
-        filteredKeys = filteredKeys.filter(k => !maleSongs.includes(k));
-      }
-
-      const available = filteredKeys.filter(k => !history.includes(k));
-      if (available.length === 0) {
-        history = [];
-        alert("Alle Songs wurden kürzlich gespielt. Die Liste wird zurückgesetzt.");
-        return;
-      }
-
-      const choice = available[Math.floor(Math.random() * available.length)];
-      document.getElementById("songDisplay").innerText = songData[choice];
-      history.push(choice);
-      if (history.length > 15) history.shift();
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
